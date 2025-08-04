@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CHSE 12 Chemistry - D Block Elements Quiz</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 700px; margin: auto; }
+    h2 { color: #1a75ff; }
+    .question { margin-bottom: 15px; }
+    .question p { font-weight: bold; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>CHSE Class 12 Chemistry Quiz – D-block Elements</h2>
+  <form id="quizForm">
+    <label><b>Enter Your Name:</b></label><br>
+    <input type="text" id="name" required><br><br>
+
+    <div class="question">
+      <p>1. Which of the following ion is colourless?</p>
+      <input type="radio" name="q1" value="A"> A. Sc³⁺<br>
+      <input type="radio" name="q1" value="B"> B. Cr³⁺<br>
+      <input type="radio" name="q1" value="C"> C. Fe²⁺<br>
+      <input type="radio" name="q1" value="D"> D. Mn²⁺<br>
+    </div>
+
+    <div class="question">
+      <p>2. Which of the following is not a transition element?</p>
+      <input type="radio" name="q2" value="A"> A. Fe<br>
+      <input type="radio" name="q2" value="B"> B. Zn<br>
+      <input type="radio" name="q2" value="C"> C. Cu<br>
+      <input type="radio" name="q2" value="D"> D. Cr<br>
+    </div>
+
+    <div class="question">
+      <p>3. Which element shows maximum number of oxidation states?</p>
+      <input type="radio" name="q3" value="A"> A. Mn<br>
+      <input type="radio" name="q3" value="B"> B. Fe<br>
+      <input type="radio" name="q3" value="C"> C. Co<br>
+      <input type="radio" name="q3" value="D"> D. Ni<br>
+    </div>
+
+    <div class="question">
+      <p>4. Which ion has d⁵ configuration?</p>
+      <input type="radio" name="q4" value="A"> A. Fe³⁺<br>
+      <input type="radio" name="q4" value="B"> B. Mn²⁺<br>
+      <input type="radio" name="q4" value="C"> C. Cr²⁺<br>
+      <input type="radio" name="q4" value="D"> D. Co³⁺<br>
+    </div>
+
+    <div class="question">
+      <p>5. Why Zn²⁺ is colourless?</p>
+      <input type="radio" name="q5" value="A"> A. Fully filled d-orbital<br>
+      <input type="radio" name="q5" value="B"> B. Empty d-orbital<br>
+      <input type="radio" name="q5" value="C"> C. Half-filled orbital<br>
+      <input type="radio" name="q5" value="D"> D. None of these<br>
+    </div>
+
+    <button type="button" onclick="submitQuiz()">Submit</button>
+  </form>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function submitQuiz() {
+      let correctAnswers = ['A', 'B', 'A', 'B', 'A'];
+      let score = 0;
+      let userAnswers = [];
+      let name = document.getElementById('name').value;
+
+      for (let i = 1; i <= 5; i++) {
+        let radios = document.getElementsByName('q' + i);
+        let answered = false;
+        for (let j = 0; j < radios.length; j++) {
+          if (radios[j].checked) {
+            userAnswers.push(radios[j].value);
+            if (radios[j].value === correctAnswers[i - 1]) {
+              score++;
+            }
+            answered = true;
+          }
+        }
+        if (!answered) {
+          alert("Please answer all questions before submitting.");
+          return;
+        }
+      }
+
+      document.getElementById("result").innerText = name + ", you scored " + score + " out of 5.";
+
+      // Send to Google Sheet
+      fetch("https://script.google.com/macros/s/AKfycbwjD3R7hdtk0Bo8FFmLDelhnYIStUh_qYjwT_RPwSWdTd7EMy2fBlZqqAkgjQriBYxe/execL", {
+        method: "POST",
+        mode: 'no-cors',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, answers: userAnswers.join(", "), score: score })
+      });
+    }
+  </script>
+</body>
+</html>
